@@ -1,0 +1,16 @@
+title: Start
+tags: 
+colorID: 0
+position: 0,0
+---
+
+<<Scene @ bg_office>>
+
+<<Show @ act_bizguy,left>>
+<<Show @ act_coolgirl,right>>
+
+Adam: Sorry I'm late.
+Eve: Whatever.
+
+
+===
