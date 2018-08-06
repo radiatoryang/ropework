@@ -15,7 +15,7 @@ it is technically possible to use this to make a whole visual novel in Unity wit
 2. import Ropework.unitypackage (see ["Releases"](https://github.com/radiatoryang/ropework/releases) )
 3. add RopeworkManager prefab to a scene (TODO: set folder path to detect and load Yarn scripts)
 4. all sprites and sounds go in /Assets/Resources/, make sure they're imported as sprites (TODO: let you manually assign sprites too)
-5. make a visual novel! make sure you read the YarnSpinner documentation
+5. download the [Yarn Editor](https://github.com/InfiniteAmmoInc/Yarn) and start writing! make sure you read the [YarnSpinner documentation](https://github.com/thesecretlab/YarnSpinner/blob/master/Documentation/YarnSpinner-Unity/YarnSpinner-with-Unity-StepByStep.md) so you understand how it all fits together too
 
 ## usage
 see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation and examples
