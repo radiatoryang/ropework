@@ -1,4 +1,5 @@
 # ropework
+<img width=30% align=right src=https://github.com/radiatoryang/ropework/blob/master/ropework_demo1.gif?raw=true> 
 a visual novel framework template for Yarn Spinner / Unity C#
 
 ## quick install
