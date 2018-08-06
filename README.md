@@ -1,7 +1,7 @@
 # ropework
 <img width=30% align=right src=https://raw.githubusercontent.com/radiatoryang/ropework/master/ropework_demo1.gif> 
 
-a visual novel framework template for Yarn Spinner / Unity C#... where you can use Yarn scripts to control a lot of scene drawing (scene background, sprites), and in the future, even manage characters / audio / video
+a visual novel framework template for [Yarn Spinner](https://github.com/thesecretlab/YarnSpinner/) / Unity C#... where you can use [Yarn](https://github.com/InfiniteAmmoInc/Yarn) scripts to control a lot of scene drawing (scene background, sprites), and in the future, even manage characters / audio / video
 
 it is technically possible to use this to make a whole visual novel in Unity without knowing any C# code, but that's not recommended... it is intended more as a simple framework / template for you to modify, or to learn from
 
