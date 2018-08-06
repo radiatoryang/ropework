@@ -6,9 +6,9 @@ a visual novel framework template for [Yarn Spinner](https://github.com/thesecre
 it is technically possible to use this to make a whole visual novel in Unity without knowing any C# code, but that's not recommended... it is intended more as a simple framework / template for you to modify, or to learn from
 
 ## quick install
-1. clone or download this repo
-2. open it in Unity (currently built in Unity 2017.4.8)
-3. open the example scene(s), edit the scripts, dig around
+1. clone or download this repo into a project folder
+2. open the project folder in Unity (currently being developed in Unity 2017.4.8)
+3. open the example scene(s), edit the scripts, dig around and explore
 
 ## proper install
 1. install Unity, create project, import a [YarnSpinner.unitypackage release](https://github.com/thesecretlab/YarnSpinner/releases)
