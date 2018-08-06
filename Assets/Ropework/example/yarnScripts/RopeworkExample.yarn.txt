@@ -4,13 +4,58 @@ colorID: 0
 position: 0,0
 ---
 
+// example scene
+A CONVERSATION
+
 <<Scene @ bg_office>>
 
-<<Show @ act_bizguy,left>>
+(birds chirping)
+
 <<Show @ act_coolgirl,right>>
 
-Adam: Sorry I'm late.
-Eve: Whatever.
+Eve: Hey Adam, I found the report you --
+Eve: Oh. He's not even here. Typical.
+Eve: Just one more day...
+
+<<Show @ act_bizguy,left>>
+
+Adam: One more day... until what?
+
+-> Eve: (carefully lie)
+	Eve: Until... my niece's birthday!
+	Adam: That's great. How old is she now?
+		-> Three.
+		Eve: Three years old.
+		-> Four.
+		Eve: She's going to be four.
+		-> Five.
+		Eve: She's almost five.
+	Adam: Wow. They grow up so fast, huh?
+	Eve: Yep. She's so cute. I love her so much. Anyway...
+-> Eve: (try to change the subject)
+
+Eve: Uh, I was looking for you, I have the RPT report you wanted.
+Adam: Great, I'll take it. Thanks.
+Eve: Ok, well, see you later.
+<<Hide @ act_coolgirl>>
+
+Adam: Wait.
+<<Show @ act_coolgirl,right>>
+Eve: ?
+Adam: I need to ask you something.
+Eve: OK?
+Adam: Eve, you... 
+Adam: ... You like me, right?
+
+-> Eve: (lie) Sure, why wouldn't I?
+	Eve: Sure, why wouldn't I?
+-> Eve: (deflect) like, like-like?
+	Eve: Like... like-like? Or...
+
+...
+
+TO BE CONTINUED
+
 
 
 ===

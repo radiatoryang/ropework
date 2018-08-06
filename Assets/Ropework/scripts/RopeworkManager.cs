@@ -51,9 +51,20 @@ namespace Ropework {
 			SetSpriteActual( spriteName, pos );
 		}
 
+		[YarnCommand("Hide")]
+		public void HideSprite(string spriteName) {
+			// let's just do this in a sloppy way for now
+			foreach ( var sprite in sprites ) {
+				if (sprite.name == spriteName) {
+					Destroy(sprite.gameObject);
+				}
+			}
+		}
+
 		void SetSpriteActual(string spriteName, Vector2 position) {
 			var newSpriteObject = Instantiate<Image>(genericSprite, genericSprite.transform.parent);
 			sprites.Add(newSpriteObject);
+			newSpriteObject.name = spriteName;
 			newSpriteObject.sprite = ValidateSprite( spriteName );
 			newSpriteObject.SetNativeSize();
 			newSpriteObject.rectTransform.anchoredPosition = Vector2.Scale( position, new Vector2( 1280f, 720f ) );
