@@ -11,13 +11,13 @@ A CONVERSATION
 
 (birds chirping)
 
-<<Show @ act_coolgirl,right>>
+<<Act @ Eve,cool-girl,right>>
 
 Eve: Hey Adam, I found the report you --
 Eve: Oh. He's not even here. Typical.
 Eve: Just one more day...
 
-<<Show @ act_bizguy,left>>
+<<Act @ Adam,biz-guy,left>>
 
 Adam: One more day... until what?
 
@@ -37,10 +37,10 @@ Adam: One more day... until what?
 Eve: Uh, I was looking for you, I have the RPT report you wanted.
 Adam: Great, I'll take it. Thanks.
 Eve: Ok, well, see you later.
-<<Hide @ act_coolgirl>>
+<<Hide @ cool-girl>>
 
 Adam: Wait.
-<<Show @ act_coolgirl,right>>
+<<Act @ Eve,cool-girl,right>>
 Eve: ?
 Adam: I need to ask you something.
 Eve: OK?
