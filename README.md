@@ -26,3 +26,9 @@ see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for docum
 
 ## license?
 MIT
+
+## assets used in example project:
+- Visual Novel Tutorial Set (public domain) https://opengameart.org/content/visual-novel-tutorial-set
+- Louis George Cafe font ("100% free") https://www.dafont.com/louis-george-caf.font
+- Lovely Piano Song by Rafael Krux (public domain) https://freepd.com
+- Comic Game Loop - Mischief by Kevin MacLeod (public domain) https://freepd.com 

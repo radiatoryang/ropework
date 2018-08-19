@@ -5,20 +5,23 @@ position: 0,0
 ---
 
 // example scene
-A CONVERSATION
+AN EXAMPLE
+
+<<PlayAudio @ ambient_birds, 0.5>>
+Smith and Sons Accounting; Hoboken, New Jersey, USA
 
 <<Scene @ bg_office>>
 
-(birds chirping)
-
 <<Act @ Eve,cool-girl,right>>
+<<PlayAudio @ music_funny, 1.0, loop>>
 
-Eve: Hey Adam, I found the report you --
+Eve: Hey Adam, I got your message and --
 Eve: Oh. He's not even here. Typical.
 Eve: Just one more day...
 
 <<Act @ Adam,biz-guy,left>>
 
+<<Shake @ Eve>>
 Adam: One more day... until what?
 
 -> Eve: (carefully lie)
