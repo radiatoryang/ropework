@@ -10,16 +10,18 @@ namespace Ropework {
     public class RopeworkManager : MonoBehaviour
     {
 		[Header("Manually Load Assets"), Tooltip("you can manually assign various assets here if you don't want to use /Resources/ folder")]
-		public Sprite[] loadSprites;
-		public AudioClip[] loadAudio;
+		public List<Sprite> loadSprites = new List<Sprite>();
+		public List<AudioClip> loadAudio = new List<AudioClip>();
+		[Tooltip("if enabled: on Start() this will load all sprites and audioclips in Resources folders, and put them in one pile (the Lists above), thus ignoring Resource subfolders")]
+		public bool ignoreResourceSubfolders = true;
 
 		[Header("UI settings")] // UI tuning variables and references
 		public Color highlightTint;
 		public Color defaultTint;
 
-		[Header("Object references"), Tooltip("umm don't change these")]
+		[Header("Object references"), Tooltip("umm you shouldn't really change these")]
 		public RectTransform spriteGroup; // used for screenshake
-		public Image bgImage;
+		public Image bgImage, fadeBG;
 		public Image genericSprite; // local prefab, used for instantiating sprites
 		public AudioSource myAudioSource; // local prefab, used for instantiating sounds
 
@@ -35,8 +37,14 @@ namespace Ropework {
 			this.name = "@";
 		}
 
-		void Update () {
-
+		void Start () {
+			// if enabled, adds all Resources to internal lists / one big pile, so that you can ignore Resource subfolders
+			if ( ignoreResourceSubfolders ) {
+				var allSpritesInResources = Resources.LoadAll<Sprite>("");
+				loadSprites.AddRange( allSpritesInResources );
+				var allAudioInResources = Resources.LoadAll<AudioClip>("");
+				loadAudio.AddRange( allAudioInResources );
+			}
 		}
 
 		#region YarnCommands
@@ -65,7 +73,7 @@ namespace Ropework {
 			// have to use SetSprite() because par[2] and par[3] might be keywords (e.g. "left", "right")
 			var newActor = SetSprite( string.Format("{0},{1},{2}", spriteName, par.Length > 2 ? par[2] : "", par.Length > 3 ? par[3] : "" ) );
 
-			// if the actor is using a sprite already, then maybe clone position, and destroy it
+			// if the actor is using a sprite already, then clone position and destroy it
 			if ( actors.ContainsKey(actorName)) {
 				// if any missing position params, assume the actor position should stay the same
 				var newPos = newActor.rectTransform.anchoredPosition;
@@ -154,7 +162,37 @@ namespace Ropework {
 			}
 		}
 
-		// PlayAudio( soundName,volume,"loop" )... PlayAudio(soundName,1.0) plays the sound once at 100% volume
+		// move a sprite
+		// usage: <<Move @ actorOrspriteName, screenPosX, screenPosY, moveTime>>
+		// screenPosX and screenPosY are normalized screen coordinates (0.0 - 1.0)
+		// moveTime is the time in seconds it will take to reach that position
+		[YarnCommand("Move")]
+		public void MoveSprite(params string[] parameters) {
+			var pars = CleanParams( parameters );
+
+			var image = FindActorOrSprite( pars[0] );
+			// get new screen position
+			Vector2 newPos = new Vector2(0.5f, 0.5f);
+			if ( pars.Length > 2 ) {
+				newPos = new Vector2( ConvertCoordinates(pars[1]), ConvertCoordinates(pars[2]) );
+			}
+			// get move speed, with error handling
+			float moveTime = 1f;
+			if ( pars.Length > 3 && float.TryParse( pars[3], out moveTime ) == false ) {
+				Debug.LogErrorFormat(this, "Ropework <<Move>> couldn't parse moveSpeed [{0}] as a number", pars[3] );
+			}
+			// actually do the moving now
+			StartCoroutine( MoveCoroutine( image, Vector2.Scale(newPos, new Vector2(1280f, 720f) ), moveTime) );
+		}
+
+		// flip a sprite
+		[YarnCommand("Flip")]
+		public void FlipSprite(string actorOrSpriteName) {
+			var image = FindActorOrSprite( actorOrSpriteName );
+			image.rectTransform.localScale = Vector3.Scale(image.rectTransform.localScale, new Vector3(-1f, 1f, 1f) );
+		}
+
+		// usage: PlayAudio( soundName,volume,"loop" )...  PlayAudio(soundName,1.0) plays soundName once at 100% volume... if third parameter was word "loop" it would loop
 		// "volume" is a number from 0.0 to 1.0
 		// "loop" is the word "loop" (or "true"), which tells the sound to loop over and over
 		[YarnCommand("PlayAudio")]
@@ -222,7 +260,7 @@ namespace Ropework {
 
 		// shakes actorName or spriteName at X strength
 		[YarnCommand("Shake")]
-		public void Shake(params string[] parameters) {
+		public void SetShake(params string[] parameters) {
 			var pars = CleanParams( parameters );
 
 			// detect shakeStrength setting
@@ -238,7 +276,49 @@ namespace Ropework {
 			if ( findShakeTarget != null ) {
 				StartCoroutine( SetShake( findShakeTarget.rectTransform, shakeStrength ) );
 			}
-			
+		}
+
+		// typical screen fade effect, good for transitions
+		// usage: <<Fade @ #hexcolor, startAlpha, endAlpha, fadeTime>>
+		[YarnCommand("Fade")]
+		public void SetFade(params string[] parameters) {
+			var pars = CleanParams( parameters );
+
+			// grab the color
+			Color fadeColor = Color.black;
+			if ( ColorUtility.TryParseHtmlString( pars[0], out fadeColor ) == false ) {
+				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse [{0}] as an HTML hex color... it should look like [#FFFFFF] or [##FFCC00FF], or a small number of keywords work too, like [black] or [red]", pars[0] );
+				fadeColor = Color.magenta;
+			}
+
+			// load other fade vars
+			float startAlpha = 0f;
+			float endAlpha = 1f;
+			float fadeTime = 1f;
+			if ( pars.Length > 1 && float.TryParse( pars[1], out startAlpha )==false ) {
+				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse startAlpha [{0}] as a number", pars[1] );
+			}
+			if ( pars.Length > 2 && float.TryParse( pars[2], out endAlpha )==false ) {
+				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse endAlpha [{0}] as a number", pars[1] );
+			}
+			if ( pars.Length > 3 && float.TryParse( pars[3], out fadeTime )==false ) {
+				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse fadeTime [{0}] as a number", pars[1] );
+			}
+
+			// do the fade
+			StartCoroutine( FadeCoroutine( fadeColor, startAlpha, endAlpha, fadeTime ) );
+		}
+
+		// convenient for an easy fade in, no matter what the previous fade color or alpha was
+		[YarnCommand("FadeIn")]
+		public void SetFadeIn(string fadeTime) {
+			float fadeTimeReal = 1f;
+			if ( float.TryParse(fadeTime, out fadeTimeReal ) == false ) {
+				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse fadeTime [{0}] as a number", fadeTime );
+			}
+
+			// do the fade in
+			StartCoroutine( FadeCoroutine( fadeBG.color, -1f, 0f, fadeTimeReal ) );
 		}
 
 		#endregion
@@ -260,14 +340,41 @@ namespace Ropework {
 			while ( t < 1f ) {
 				t += Time.deltaTime / 2f;
 				foreach ( var spr in sprites ) {
+					Vector3 regularScalePreserveXFlip = new Vector3( Mathf.Sign(spr.transform.localScale.x), 1f, 1f);
 					if ( spr != highlightedSprite) { // set back to normal
-						spr.transform.localScale = Vector3.MoveTowards( spr.transform.localScale, Vector3.one, Time.deltaTime );
+						spr.transform.localScale = Vector3.MoveTowards( spr.transform.localScale, regularScalePreserveXFlip, Time.deltaTime );
 						spr.color = Color.Lerp( spr.color, defaultTint, Time.deltaTime * 5f );
 					} else { // a little bit bigger / brighter
-						spr.transform.localScale = Vector3.MoveTowards( spr.transform.localScale, Vector3.one * 1.1f, Time.deltaTime );
+						spr.transform.localScale = Vector3.MoveTowards( spr.transform.localScale, regularScalePreserveXFlip * 1.05f, Time.deltaTime );
 						spr.color = Color.Lerp( spr.color, highlightTint, Time.deltaTime * 5f );
 					}
 				}
+				yield return 0;
+			}
+		}
+
+		IEnumerator MoveCoroutine(Image image, Vector2 newAnchorPos, float moveTime ) {
+			Vector2 startPos = image.rectTransform.anchoredPosition;
+			float t = 0f;
+			while (t < 1f ) {
+				t += Time.deltaTime / Mathf.Max(0.001f, moveTime); // Math.Max to prevent divide by zero error
+				image.rectTransform.anchoredPosition = Vector2.Lerp( startPos, newAnchorPos, t);
+				yield return 0;
+			}
+		}
+
+		IEnumerator FadeCoroutine(Color fadeColor, float startAlpha, float endAlpha, float fadeTime) {
+			Color startColor = fadeColor;
+			if ( startAlpha >= 0f ) { // if startAlpha is -1f, that means just use whatever's there
+				startColor.a = startAlpha;
+			} else {
+				startColor = fadeBG.color;
+			}
+			fadeColor.a = endAlpha;
+			float t = 0f;
+			while ( t < 1f ) {
+				t += Time.deltaTime / Mathf.Max(0.001f, fadeTime); // Math.Max to prevent divide by zero error
+				fadeBG.color = Color.Lerp( startColor, fadeColor, t );
 				yield return 0;
 			}
 		}
@@ -395,14 +502,19 @@ namespace Ropework {
 				}
 			}
 
-			// otherwise, let's search Resources for it
-			var newAsset = Resources.Load<T>(assetName);
-			if ( newAsset == null ) {
-				Debug.LogErrorFormat(this, "Ropework can't find asset [{0}]... maybe it is misspelled, or isn't imported as {1}?", assetName, typeof(T).ToString() );
-				return null;
-			} else {
-				return newAsset;
+			// v1.0: this implementation lacked support for subfolders inside \Resources\
+			// so the new technique is to just load all Resources assets on Start into the asset arrays
+
+			// otherwise, let's search Resources for it...
+			if ( ignoreResourceSubfolders == false ) {
+				var newAsset = Resources.Load<T>(assetName);
+				if ( newAsset != null ) {
+					return newAsset;
+				}
 			}
+
+			Debug.LogErrorFormat(this, "Ropework can't find asset [{0}]... maybe it is misspelled, or isn't imported as {1}?", assetName, typeof(T).ToString() );
+			return null; // didn't find any matching asset
 		}
 
 
