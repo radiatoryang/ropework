@@ -5,14 +5,21 @@ a visual novel framework template built on [Yarn Spinner](https://github.com/the
 
 it is technically possible to use this to make a whole visual novel in Unity without knowing any C# code, but that's not recommended... it is intended more as a simple framework / template for you to modify, or to learn from
 
+**this is aimed at people who already know some Unity or game dev... if you're a total beginner, then do some Unity tutorials first!** I recommend [Unity's video tutorials](https://unity3d.com/learn) or the [Catlike Coding tutorials](https://catlikecoding.com/unity/tutorials/).
+
 ### simple in-browser demo example (Unity WebGL)
 https://radiatoryang.github.io/ropework/demo_simple/
 
 ## download / install
-download a pre-configured blank Unity project template OR a .unitypackage from ["Releases"](https://github.com/radiatoryang/ropework/releases)
+download a pre-configured blank Unity project template OR a .unitypackage from **[Releases](https://github.com/radiatoryang/ropework/releases)**
 
 ## usage
 see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation, API, and examples
+
+your basic workflow will look like this:
+- in the [Yarn Editor](https://github.com/InfiniteAmmoInc/Yarn), write a Yarn.txt script and save it into your Unity project /Assets/ folder
+- in Unity on the RopeworkManager prefab, assign the Yarn script to the YarnSpinner DialogueRunner's "Source Text" array (in the Unity inspector)
+- press Play and see if it works!... keep in mind that, by default, YarnSpinner will start with a node called "Start"
 
 ## example Yarn script
 <code><pre>// sets background image to sprite called "bg_office"
