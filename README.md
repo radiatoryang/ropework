@@ -8,21 +8,29 @@ it is technically possible to use this to make a whole visual novel in Unity wit
 ### simple in-browser demo example (Unity WebGL)
 https://radiatoryang.github.io/ropework/demo_simple/
 
-## quick install
-1. clone or download this repo into a new folder
-2. open your new project folder in Unity (currently being developed in Unity 2018.2.4f1)
-3. open the example scene(s), edit the scripts, dig around and explore
-4. a "blank" template is there for you to use too
-
-## proper install
-1. install Unity, create project, import a [YarnSpinner.unitypackage release](https://github.com/thesecretlab/YarnSpinner/releases)
-2. import Ropework.unitypackage (see ["Releases"](https://github.com/radiatoryang/ropework/releases) )
-3. add RopeworkManager prefab to a scene (TODO: set folder path to detect and load Yarn scripts)
-4. all sprites and sounds go in /Assets/Resources/, make sure they're imported as sprites (TODO: let you manually assign sprites too)
-5. download the [Yarn Editor](https://github.com/InfiniteAmmoInc/Yarn) and start writing! make sure you read the [YarnSpinner documentation](https://github.com/thesecretlab/YarnSpinner/blob/master/Documentation/YarnSpinner-Unity/YarnSpinner-with-Unity-StepByStep.md) so you understand how it all fits together too
+## download / install
+see ["Releases"](https://github.com/radiatoryang/ropework/releases) )
 
 ## usage
 see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation, API, and examples
+
+## example Yarn script
+<code><pre>// sets background image to sprite called "bg_office"
+<<Scene @ bg_office>>
+
+// adds actor named "Eve" using sprite "cool-girl", placed in left-half + center of screen, with green text label
+<<Act @ Eve, cool-girl, left, center, green>>
+Eve: Finally, a quiet day at the office. Maybe I'll be able to get some work done.
+
+// adds actor "Adam" with sprite "biz-guy" off-screen right, with blue-ish text label
+<<Act @ Adam, biz-guy, 1.25, center, #226677>>
+// animate Adam into new position in right-half + center, within 0.5 seconds
+<<Move @ Adam, right, center, 0.5>>
+// start playing audioclip "music_funny" at 100% volume, loop forever
+<<PlayAudio @ music_funny, 1.0, loop>>
+
+Adam: Hey Eve! I have a question!
+Eve: Oh no...</pre></code>
 
 ## uses the following:
 - Yarn https://github.com/InfiniteAmmoInc/Yarn
