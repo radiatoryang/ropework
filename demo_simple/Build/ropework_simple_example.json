@@ -1,0 +1,12 @@
+{
+"companyName": "Robert Yang",
+"productName": "Ropework",
+"dataUrl": "ropework_simple_example.data.unityweb",
+"wasmCodeUrl": "ropework_simple_example.wasm.code.unityweb",
+"wasmFrameworkUrl": "ropework_simple_example.wasm.framework.unityweb",
+"TOTAL_MEMORY": 67108864,
+"graphicsAPI": ["WebGL 2.0", "WebGL 1.0"],
+"webglContextAttributes": {"preserveDrawingBuffer": false},
+"splashScreenStyle": "Dark",
+"backgroundColor": "#231F20"
+}
