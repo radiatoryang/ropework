@@ -5,7 +5,8 @@ a visual novel framework template built on [Yarn Spinner](https://github.com/the
 
 it is technically possible to use this to make a whole visual novel in Unity without knowing any C# code, but that's not recommended... it is intended more as a simple framework / template for you to modify, or to learn from
 
-simple in-browser demo example (Unity WebGL): https://radiatoryang.github.io/ropework/demo_simple/
+### simple in-browser demo example (Unity WebGL)
+https://radiatoryang.github.io/ropework/demo_simple/
 
 ## quick install
 1. clone or download this repo into a new folder
