@@ -508,7 +508,7 @@ namespace Ropework {
         }
 
 		// utility function to find an asset, whether it's in \Resources\ or manually loaded via an array
-		T FetchAsset<T>( string assetName ) where T : Object, new() {
+		T FetchAsset<T>( string assetName ) where T : UnityEngine.Object {
 			// first, check to see if it's a manully loaded asset, with manual array checks... it's messy but I can't think of a better way to do this
 			if ( typeof(T) == typeof(Sprite) ) {
 				foreach ( var spr in loadSprites ) {
