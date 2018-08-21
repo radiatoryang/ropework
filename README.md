@@ -9,7 +9,7 @@ it is technically possible to use this to make a whole visual novel in Unity wit
 https://radiatoryang.github.io/ropework/demo_simple/
 
 ## download / install
-see ["Releases"](https://github.com/radiatoryang/ropework/releases) )
+download a pre-configured blank Unity project template OR a .unitypackage from ["Releases"](https://github.com/radiatoryang/ropework/releases)
 
 ## usage
 see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation, API, and examples
