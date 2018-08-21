@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Ropework/example/scenes/ropework_blank_template.unity
+    guid: 09798b42f0e772d43bca781a3c4d8dfc
+  - enabled: 0
     path: Assets/Ropework/example/scenes/ropework_example_scene.unity
     guid: 141e0d5203fa75745894e9e4945e7743
   m_configObjects: {}

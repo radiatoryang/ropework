@@ -1,0 +1,25 @@
+
+title: Start
+tags: 
+colorID: 0
+position: 0,0
+---
+
+// sets background image to sprite called "bg_office"
+<<Scene @ bg_office>>
+
+// creates a new actor named "Eve" using a sprite called "cool-girl"
+<<Act @ Eve, cool-girl>>
+Eve: I'm in an office.
+Eve: I wonder what I should do now?
+
+// WRITE YOUR STORY HERE!
+
+Eve: 
+
+
+
+
+
+// DON'T DELETE THE "==="
+===
