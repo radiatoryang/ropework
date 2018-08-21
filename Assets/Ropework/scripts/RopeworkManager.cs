@@ -25,10 +25,14 @@ namespace Ropework {
 		public Image genericSprite; // local prefab, used for instantiating sprites
 		public AudioSource myAudioSource; // local prefab, used for instantiating sounds
 
-		// internal stuff...
+		// big lists to keep track of all instantiated objects
 		List<AudioSource> sounds = new List<AudioSource>(); // big list of all instantiated sounds
 		List<Image> sprites = new List<Image>(); // big list of all instantianted sprites
-		[HideInInspector] public Dictionary<string,Image> actors = new Dictionary<string,Image>(); // "actors" are sprites with name IDs
+
+		// "actors" are sprites with name IDs
+		// TODO: if "actors" need more data (more than currentImage and color) maybe put them in their own serialized class
+		[HideInInspector] public Dictionary<string,Image> actors = new Dictionary<string,Image>(); // tracks names to sprites
+		[HideInInspector] public Dictionary<string, Color> actorColors = new Dictionary<string, Color>(); // tracks names to colors... but this is just data, the DialogueUI script has to actually do something with the color
 
 		string[] separ = new string[] {","}; // stores the separator value, usually a comma
 
@@ -55,7 +59,7 @@ namespace Ropework {
 			bgImage.sprite = FetchAsset<Sprite>(spriteName);
 		}
 
-		// SetActor(actorName,spriteName,positionX,positionY)
+		// SetActor(actorName,spriteName,positionX,positionY,color)
 		// main function for moving / adjusting characters
 		[YarnCommand("Act")]
 		public void SetActor(params string[] parameters) {
@@ -73,7 +77,13 @@ namespace Ropework {
 			// have to use SetSprite() because par[2] and par[3] might be keywords (e.g. "left", "right")
 			var newActor = SetSprite( string.Format("{0},{1},{2}", spriteName, par.Length > 2 ? par[2] : "", par.Length > 3 ? par[3] : "" ) );
 
-			// if the actor is using a sprite already, then clone position and destroy it
+			// define text label BG color
+			var actorColor = Color.black;
+			if ( par.Length > 4 && ColorUtility.TryParseHtmlString( par[4], out actorColor )==false ) {
+				Debug.LogErrorFormat(this, "Ropework can't parse [{0}] as an HTML color (e.g. [#FFFFFF] or certain keywords like [white])", par[4]);
+			}
+
+			// if the actor is using a sprite already, then clone any persisting data, and destroy it (just to be safe)
 			if ( actors.ContainsKey(actorName)) {
 				// if any missing position params, assume the actor position should stay the same
 				var newPos = newActor.rectTransform.anchoredPosition;
@@ -82,13 +92,20 @@ namespace Ropework {
 				} else if ( par.Length == 3) { // missing 1 param, override y
 					newPos.y = actors[actorName].rectTransform.anchoredPosition.y;
 				}
+				// if any missing color params, then assume actor color should stay the same
+				if ( par.Length <= 4 ) {
+					actorColor = actorColors[actorName];
+				}
 				newActor.rectTransform.anchoredPosition = newPos;
 				// clean-up
 				Destroy( actors[actorName].gameObject );
 				actors.Remove(actorName);
+				actorColors.Remove(actorName);
 			}
 
+			// save actor data
 			actors.Add( actorName, newActor );
+			actorColors.Add( actorName, actorColor );
 		}
 
 		// SetSprite(spriteName,positionX,positionY)
@@ -253,8 +270,12 @@ namespace Ropework {
 		// stops all currently playing sounds
 		[YarnCommand("StopAudioAll")]
 		public void StopAudioAll() {
+			var toStop = new List<AudioSource>();
 			foreach (var audioSrc in sounds ) {
-				StopAudio( audioSrc.name );
+				toStop.Add( audioSrc );
+			}
+			foreach ( var stopThis in toStop ) {
+				StopAudio( stopThis.name );
 			}
 		}
 
@@ -286,7 +307,7 @@ namespace Ropework {
 
 			// grab the color
 			Color fadeColor = Color.black;
-			if ( ColorUtility.TryParseHtmlString( pars[0], out fadeColor ) == false ) {
+			if ( pars.Length > 0 && ColorUtility.TryParseHtmlString( pars[0], out fadeColor ) == false ) {
 				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse [{0}] as an HTML hex color... it should look like [#FFFFFF] or [##FFCC00FF], or a small number of keywords work too, like [black] or [red]", pars[0] );
 				fadeColor = Color.magenta;
 			}
@@ -313,7 +334,7 @@ namespace Ropework {
 		[YarnCommand("FadeIn")]
 		public void SetFadeIn(string fadeTime) {
 			float fadeTimeReal = 1f;
-			if ( float.TryParse(fadeTime, out fadeTimeReal ) == false ) {
+			if ( fadeTime.Length > 0 && float.TryParse(fadeTime, out fadeTimeReal ) == false ) {
 				Debug.LogErrorFormat( this, "Ropework <<Fade>> couldn't parse fadeTime [{0}] as a number", fadeTime );
 			}
 
@@ -421,6 +442,7 @@ namespace Ropework {
 		IEnumerator SetDestroyTime(AudioSource destroyThis, float timeDelay) {
 			float timer = timeDelay;
 			while ( timer > 0f ) {
+				if ( destroyThis == null ) { break; } // it could've been destroyed already, so let's just make sure
 				if ( destroyThis.isPlaying ) {
 					timer -= Time.deltaTime;
 				}

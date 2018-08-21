@@ -123,7 +123,7 @@ Prefab:
     - target: {fileID: 114392013309792444, guid: 9e0841b82a4ebcd438730d23886e17e6,
         type: 2}
       propertyPath: loadAudio.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114392013309792444, guid: 9e0841b82a4ebcd438730d23886e17e6,
         type: 2}
@@ -430,6 +430,16 @@ Prefab:
       value: 
       objectReference: {fileID: 21300000, guid: 77d8f11e4af00594c8aaf1784c1dd7a8,
         type: 3}
+    - target: {fileID: 114392013309792444, guid: 9e0841b82a4ebcd438730d23886e17e6,
+        type: 2}
+      propertyPath: loadAudio.Array.data[1]
+      value: 
+      objectReference: {fileID: 8300000, guid: 6076163f000d35246a5a23e13ae9de25, type: 3}
+    - target: {fileID: 114353624427399716, guid: 9e0841b82a4ebcd438730d23886e17e6,
+        type: 2}
+      propertyPath: sourceText.Array.data[0]
+      value: 
+      objectReference: {fileID: 4900000, guid: 11cb79c79787a8546b031e3594777314, type: 3}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 9e0841b82a4ebcd438730d23886e17e6, type: 2}
   m_IsPrefabParent: 0

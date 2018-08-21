@@ -41,8 +41,9 @@ namespace Yarn.Unity.Example {
      */
     public class ClassicDialogueUI : Yarn.Unity.DialogueUIBehaviour
     {
-
+        // Ropework specific stuff
         public Ropework.RopeworkManager ropework;
+        public Text nameText;
 
         /// The object that contains the dialogue and the options.
         /** This object will be enabled when conversation starts, and 
@@ -74,6 +75,9 @@ namespace Yarn.Unity.Example {
 
         void Awake ()
         {
+            // if Ropework manager is null, then find it
+            if ( ropework == null ) { ropework = FindObjectOfType<Ropework.RopeworkManager>(); }
+
             // Start by hiding the container, line and option buttons
             if (dialogueContainer != null)
                 dialogueContainer.SetActive(false);
@@ -95,14 +99,29 @@ namespace Yarn.Unity.Example {
             // Show the text
             lineText.gameObject.SetActive (true);
 
+            // ROPEWORK SPECIFIC STUFF:
             // Extract speaker's name, if possible
             string speakerName = "";
-            if ( line.text.Contains(":") ) {
-                speakerName = line.text.Split(':')[0];
+            string lineTextDisplay = line.text;
+            if ( line.text.Contains(":") ) { // if there's a ":" separator, then identify the first part as a speaker
+                var splitLine = line.text.Split( new char[] {':'}, 2); // but only split once
+                speakerName = splitLine[0].Trim();
+                lineTextDisplay = splitLine[1].Trim();
             }
-            // Highlight actor's sprite (if on-screen) using RopeworkManager
-            if ( ropework.actors.ContainsKey(speakerName) ) {
-                ropework.HighlightSprite( ropework.actors[speakerName] );
+            
+            if ( speakerName.Length > 0 ) {
+                // change dialog nameplate text and, if applicable the BG color
+                nameText.transform.parent.gameObject.SetActive(true);
+                nameText.text = speakerName;
+                if ( ropework.actorColors.ContainsKey(speakerName) ) {
+                    nameText.transform.parent.GetComponent<Image>().color = ropework.actorColors[speakerName];
+                }
+                // Highlight actor's sprite (if on-screen) using RopeworkManager
+                if ( ropework.actors.ContainsKey(speakerName) ) {
+                    ropework.HighlightSprite( ropework.actors[speakerName] );
+                }
+            } else { // no speaker name found, so hide the nameplate
+                nameText.transform.parent.gameObject.SetActive(false);
             }
 
             // display dialog
@@ -112,7 +131,7 @@ namespace Yarn.Unity.Example {
 
                 bool earlyOut = false;
                 yield return 0; // give time for previous Input.anyKeyDown event to become false
-                foreach (char c in line.text) {
+                foreach (char c in lineTextDisplay) {
                     float timeWaited = 0f;
                     stringBuilder.Append (c);
                     lineText.text = stringBuilder.ToString ();
@@ -120,7 +139,7 @@ namespace Yarn.Unity.Example {
                         timeWaited += Time.deltaTime;
                         // early out / skip ahead
                         if ( Input.anyKeyDown ) {
-                            lineText.text = line.text;
+                            lineText.text = lineTextDisplay;
                             earlyOut = true;
                         }
                         yield return 0;
@@ -129,7 +148,7 @@ namespace Yarn.Unity.Example {
                 }
             } else {
                 // Display the line immediately if textSpeed == 0
-                lineText.text = line.text;
+                lineText.text = lineTextDisplay;
             }
 
             // Show the 'press any key' prompt when done, if we have one
