@@ -1,5 +1,5 @@
 # ropework
-<img width=30% align=right src=https://raw.githubusercontent.com/radiatoryang/ropework/master/ropework_demo1.gif> 
+<img width=30% align=right src=https://raw.githubusercontent.com/radiatoryang/ropework/master/ropework_demo2.gif> 
 
 a visual novel framework template built on [Yarn Spinner](https://github.com/thesecretlab/YarnSpinner/) / Unity C#... where you can use [Yarn](https://github.com/InfiniteAmmoInc/Yarn) scripts to control scene drawing (scene background, sprites, fades) and manage characters / audio
 
