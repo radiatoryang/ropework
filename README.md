@@ -14,7 +14,7 @@ https://radiatoryang.github.io/ropework/demo_simple/
 download a pre-configured blank Unity project template OR a .unitypackage from **[Releases](https://github.com/radiatoryang/ropework/releases)**
 
 ## usage
-see the [Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation, API, and examples
+see the **[Ropework wiki](https://github.com/radiatoryang/ropework/wiki) for documentation, API, and examples**
 
 your basic workflow will look like this:
 - in the [Yarn Editor](https://github.com/InfiniteAmmoInc/Yarn), write a Yarn.txt script and save it into your Unity project /Assets/ folder
