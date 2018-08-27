@@ -3,6 +3,7 @@
 
 a visual novel framework template built on [Yarn Spinner](https://github.com/thesecretlab/YarnSpinner/) / Unity C#... where you can use [Yarn](https://github.com/InfiniteAmmoInc/Yarn) scripts to control scene drawing (scene background, sprites, fades) and manage characters / audio
 
+- pairs well with [Merino](https://github.com/radiatoryang/merino), a Unity Editor plugin that lets you write and preview Yarn scripts in the editor
 - it's possible to use this to make a VN without writing C# code **but it is intended more as a template for you to modify or learn from**
 - **you'll still have to code your story, but in a much simpler script language called "Yarn"** (inspired by Twine)
 - **this is aimed at people who already know some Unity! if you're a total beginner, maybe do some Unity tutorials first!** I recommend [Unity's video tutorials](https://unity3d.com/learn) or the [Catlike Coding text tutorials](https://catlikecoding.com/unity/tutorials/).
